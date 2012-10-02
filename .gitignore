@@ -4,3 +4,8 @@
 *.jar
 *.war
 *.ear
+
+# Personal idea files #
+workspace.xml
+tasks.xml
+kashif.xml
