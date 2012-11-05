@@ -57,6 +57,27 @@ public class StateMachineTest
             Assert.fail();
         }
     }
+    @Test
+    public void checkIsAllowedCircularTransition()
+    {
+        StateMachine<TestState, TestEvent> sm = new StateMachine<TestState, TestEvent>(TestState.ERROR);
+        sm.addCircularTransition(TestState.ONE, TestEvent.B);
+        if (!sm.isAllowed(TestState.ONE, TestEvent.B))
+        {
+            Assert.fail();
+        }
+
+        sm.start(TestState.ONE);
+
+        try
+        {
+            sm.process(TestEvent.B);
+        }
+        catch (InitializationException e)
+        {
+            Assert.fail();
+        }
+    }
 
     @Test
     public void checkIsAllowedForDuplicateState()
@@ -165,6 +186,21 @@ public class StateMachineTest
         catch (Exception e)
         {
             Assert.fail();
+        }
+    }
+
+    @Test
+    public void startAndEndStatsShouldBeDifferent()
+    {
+        StateMachine<TestState, TestEvent> sm = new StateMachine<TestState, TestEvent>(TestState.ERROR);
+        try
+        {
+            sm.addTransition(TestState.ONE, TestEvent.A, TestState.ONE);
+            Assert.fail();
+        }
+        catch (IllegalArgumentException e)
+        {
+            Assert.assertTrue(true);
         }
     }
 }

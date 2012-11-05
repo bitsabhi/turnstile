@@ -7,8 +7,6 @@ import java.util.Set;
 
 public class StateMachine<STATE, EVENT>
 {
-
-
     private STATE _current_state;
     private Map<STATE, Map<EVENT, STATE>> _stateTransitions;
     private STATE _default_error_state;
@@ -24,6 +22,16 @@ public class StateMachine<STATE, EVENT>
 
     public void addTransition(STATE state, EVENT event, STATE newState)
     {
+        if (state.equals(newState))
+        {
+            throw new IllegalArgumentException("start state is equal to end state");
+        }
+
+        doAddTransition(state, event, newState);
+    }
+
+    private void doAddTransition(STATE state, EVENT event, STATE newState)
+    {
         Map<EVENT, STATE> s = _stateTransitions.get(state);
         if (s == null)
         {
@@ -35,6 +43,11 @@ public class StateMachine<STATE, EVENT>
         {
             s.put(event, newState);
         }
+    }
+
+    public void addCircularTransition(STATE state, EVENT event)
+    {
+        doAddTransition(state, event, state);
     }
 
     public void start(STATE state)
