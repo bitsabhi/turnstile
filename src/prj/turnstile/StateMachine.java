@@ -26,7 +26,6 @@ public class StateMachine<STATE, EVENT>
         {
             throw new IllegalArgumentException("start state is equal to end state");
         }
-
         doAddTransition(state, event, newState);
     }
 
@@ -53,7 +52,7 @@ public class StateMachine<STATE, EVENT>
         }
     }
 
-    public void addCircularTransition(STATE state, EVENT event)
+    public void addTransition(STATE state, EVENT event)
     {
         doAddTransition(state, event, state);
     }
