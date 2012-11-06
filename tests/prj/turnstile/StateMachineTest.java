@@ -84,21 +84,14 @@ public class StateMachineTest
     {
         StateMachine<TestState, TestEvent> sm = new StateMachine<TestState, TestEvent>(TestState.ERROR);
         sm.addTransition(TestState.ONE, TestEvent.B, TestState.TWO);
-        sm.addTransition(TestState.ONE, TestEvent.B, TestState.TWO);
-        if (!sm.isAllowed(TestState.ONE, TestEvent.B))
-        {
-            Assert.fail();
-        }
-
-        sm.start(TestState.ONE);
-
         try
         {
-            sm.process(TestEvent.B);
-        }
-        catch (InitializationException e)
-        {
+            sm.addTransition(TestState.ONE, TestEvent.B, TestState.TWO);
             Assert.fail();
+        }
+        catch (IllegalArgumentException e)
+        {
+            Assert.assertTrue(true);
         }
 
     }
@@ -125,17 +118,14 @@ public class StateMachineTest
     {
         StateMachine<TestState, TestEvent> sm = new StateMachine<TestState, TestEvent>(TestState.ERROR);
         sm.addTransition(TestState.ONE, TestEvent.B, TestState.TWO);
-        sm.addTransition(TestState.ONE, TestEvent.B, TestState.THREE);
-        sm.start(TestState.ONE);
-
         try
         {
-            sm.process(TestEvent.B);
-            Assert.assertTrue(sm.getCurrentState().equals(TestState.THREE));
-        }
-        catch (InitializationException e)
-        {
+            sm.addTransition(TestState.ONE, TestEvent.B, TestState.THREE);
             Assert.fail();
+        }
+        catch (IllegalArgumentException e)
+        {
+            Assert.assertTrue(true);
         }
     }
 

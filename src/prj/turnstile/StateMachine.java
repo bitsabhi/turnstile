@@ -41,7 +41,15 @@ public class StateMachine<STATE, EVENT>
         }
         else
         {
-            s.put(event, newState);
+            STATE existingNewState = s.get(event);
+            if (existingNewState == null)
+            {
+                s.put(event, newState);
+            }
+            else
+            {
+                throw new IllegalArgumentException("Another transition for this state and event already exists");
+            }
         }
     }
 
