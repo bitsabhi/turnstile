@@ -1,9 +1,6 @@
 package prj.turnstile;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class StateMachine<STATE, EVENT>
 {
@@ -18,6 +15,26 @@ public class StateMachine<STATE, EVENT>
         _default_error_state = defaultErrorState;
         _stateTransitions = new HashMap<STATE, Map<EVENT, STATE>>();
         _listeners = new HashSet<StateChangeListener<STATE, EVENT>>();
+    }
+
+    public void addSimilarTransitions(STATE state, STATE newState, List<EVENT> events)
+    {
+        if (state.equals(newState))
+        {
+            throw new IllegalArgumentException("start state is equal to end state");
+        }
+        for(EVENT e: events)
+        {
+            doAddTransition(state, e, newState);
+        }
+    }
+
+    public void addSimilarTransitions(STATE state, List<EVENT> events)
+    {
+        for(EVENT e: events)
+        {
+            doAddTransition(state, e, state);
+        }
     }
 
     public void addTransition(STATE state, EVENT event, STATE newState)

@@ -61,7 +61,7 @@ public class StateMachineTest
     public void checkIsAllowedCircularTransition()
     {
         StateMachine<TestState, TestEvent> sm = new StateMachine<TestState, TestEvent>(TestState.ERROR);
-        sm.addCircularTransition(TestState.ONE, TestEvent.B);
+        sm.addTransition(TestState.ONE, TestEvent.B);
         if (!sm.isAllowed(TestState.ONE, TestEvent.B))
         {
             Assert.fail();
