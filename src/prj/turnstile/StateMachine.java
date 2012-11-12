@@ -92,9 +92,9 @@ public class StateMachine<STATE, EVENT>
             throw new InitializationException("No states added via addTransition()");
         }
 
-        if (isAllowed(_current_state, event))
+        Map<EVENT, STATE> allowedTransitions = _stateTransitions.get(_current_state);
+        if (allowedTransitions != null)
         {
-            Map<EVENT, STATE> allowedTransitions = _stateTransitions.get(_current_state);
             _current_state = allowedTransitions.get(event);
             fireStateChangedListeners(prev_state, event, _current_state);
         }
