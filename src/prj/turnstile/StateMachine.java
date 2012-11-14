@@ -23,7 +23,7 @@ public class StateMachine<STATE, EVENT>
         {
             throw new IllegalArgumentException("start state is equal to end state");
         }
-        for(EVENT e: events)
+        for (EVENT e : events)
         {
             doAddTransition(state, e, newState);
         }
@@ -31,7 +31,7 @@ public class StateMachine<STATE, EVENT>
 
     public void addSimilarTransitions(STATE state, List<EVENT> events)
     {
-        for(EVENT e: events)
+        for (EVENT e : events)
         {
             doAddTransition(state, e, state);
         }
@@ -92,10 +92,10 @@ public class StateMachine<STATE, EVENT>
             throw new InitializationException("No states added via addTransition()");
         }
 
-        if (isAllowed(_current_state, event))
+        Map<EVENT, STATE> allowedTransition = _stateTransitions.get(_current_state);
+        if (isEventAllowedForTransition(event, allowedTransition))
         {
-            Map<EVENT, STATE> allowedTransitions = _stateTransitions.get(_current_state);
-            _current_state = allowedTransitions.get(event);
+            _current_state = allowedTransition.get(event);
             fireStateChangedListeners(prev_state, event, _current_state);
         }
         else
@@ -108,6 +108,11 @@ public class StateMachine<STATE, EVENT>
     public boolean isAllowed(STATE forState, EVENT event)
     {
         Map<EVENT, STATE> m = _stateTransitions.get(forState);
+        return isEventAllowedForTransition(event, m);
+    }
+
+    private boolean isEventAllowedForTransition(EVENT event, Map<EVENT, STATE> m)
+    {
         if (m == null)
         {
             return false;
