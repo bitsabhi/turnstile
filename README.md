@@ -1,4 +1,4 @@
 turnstile
 =========
 
-A simple state machine abstraction
+A simple state machine abstraction.
